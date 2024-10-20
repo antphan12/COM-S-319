@@ -1,0 +1,30 @@
+/* General background styling */
+body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+}
+
+/* For index.html */
+body.index-page {
+    background-image: url('images/katie-harp-PyTHtWgoJik-unsplash.jpg');
+}
+
+/* For expense.html */
+body.expense-page {
+    background-image: url('images/katie-harp-Rel6bBC6AuA-unsplash.jpg');
+}
+
+/* For income.html */
+body.income-page {
+    background-image: url('images/katie-harp-W2L_vvgK4-c-unsplash.jpg');
+}
+
+.header-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

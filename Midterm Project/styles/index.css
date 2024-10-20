@@ -46,12 +46,13 @@ nav ul li a {
     text-decoration: none;
     padding: 14px 20px;
     display: block;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 nav ul li a:hover {
     background-color: #575757;
     color: #fff;
+    transform: scale(1.1);
 }
 
 main {
@@ -78,6 +79,21 @@ section {
     margin: 10px;
 }
 
+.progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress {
+    height: 20px;
+    background-color: #4CAF50;
+    width: 0;
+    transition: width 0.3s;
+}
+
 footer {
     text-align: center;
     padding: 10px 0;
@@ -86,6 +102,32 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+}
+
+.income-image {
+    width: 150px;
+    height: 150px;
+    margin-left: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(249, 249, 249, 0.9); /* Slightly transparent */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the content */
+}
+
+.header-box img {
+    margin: 0 auto; /* Center the images */
+}
+
+.header-box div {
+    display: inline-block; /* Keep the text inline with the images */
+    vertical-align: middle; /* Align text vertically */
 }
 
 /* Responsive Design */

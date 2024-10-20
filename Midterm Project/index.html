@@ -9,40 +9,35 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-        .nav-link {
-            transition: background-color 0.3s, color 0.3s, transform 0.3s;
-        }
-
-        .nav-link:hover {
-            background-color: #575757;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        .welcome-message {
-            background-color: #007bff; /* Changed to blue */
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .income-image {
+            width: 150px;
+            height: 150px;
+            margin-left: 20px;
             border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body>
+<body class="index-page">
     <div class="container">
         <div class="welcome-message">
             Welcome to Cynance and Budgets!
         </div>
-        <header class="d-flex align-items-center my-4">
+        <header class="d-flex align-items-center my-4 header-box">
             <img src="images/bank.png" alt="Bank" class="me-3" style="width: 150px; height: 150px;">
             <div>
                 <h1>Cynance and Budgets</h1>
                 <p>Track your income, expenses, and savings goals efficiently.</p>
             </div>
+            <img src="images/income.png" alt="Income Image" class="income-image">
         </header>
 
         <nav class="mb-4">
@@ -74,7 +69,7 @@
             </section>
 
             <!-- Dashboard Overview Section -->
-            <section id="dashboard">
+            <section id="dashboard" class="dashboard-box">
                 <h2>Dashboard Overview</h2>
                 <div class="row">
                     <div class="col-md-4">
@@ -107,18 +102,23 @@
                 </div>
             </section>
 
-            <!-- Analytics Section -->
-            <section id="analytics">
-                <h2>Financial Analytics</h2>
-                <canvas id="expenseChart" class="mb-4"></canvas>
-                <canvas id="incomeChart"></canvas>
+            <!-- Savings Goal Form -->
+            <section id="savingsGoalSection" class="mb-4">
+                <h2>Set Savings Goal</h2>
+                <form id="savingsGoalForm">
+                    <div class="mb-3">
+                        <label for="savingsGoalInput" class="form-label">Enter Savings Goal:</label>
+                        <input type="number" class="form-control" id="savingsGoalInput" placeholder="Enter your savings goal">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Set Goal</button>
+                </form>
             </section>
         </main>
-
-        <footer class="text-center mt-4">
-            <p>Cynance and Budgets &copy; 2024</p>
-        </footer>
     </div>
+
+    <footer class="text-center mt-4">
+        <p>Cynance and Budgets &copy; 2024</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -127,6 +127,8 @@
             const savingsGoalElement = document.getElementById('savingsGoal');
             const progressElement = document.getElementById('progress');
             const userSelect = document.getElementById('userSelect');
+            const savingsGoalForm = document.getElementById('savingsGoalForm');
+            const savingsGoalInput = document.getElementById('savingsGoalInput');
 
             // Load user data from local storage
             function loadUserData(user) {
@@ -144,6 +146,11 @@
                 const progress = (totalIncome / savingsGoal) * 100;
                 progressElement.style.width = `${progress}%`;
                 progressElement.setAttribute('aria-valuenow', progress);
+
+                // Notify user when savings goal is reached
+                if (totalIncome >= savingsGoal && savingsGoal > 0) {
+                    alert('Congratulations! You have reached your savings goal!');
+                }
             }
 
             // Event listener for user selection
@@ -154,20 +161,27 @@
             // Initial load for the default user
             loadUserData(userSelect.value);
 
-            // Update total income when an expense is logged
-            const expenseForm = document.getElementById('expenseForm');
-            if (expenseForm) {
-                expenseForm.addEventListener('submit', (event) => {
+            // Event listener for savings goal form submission
+            savingsGoalForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const savingsGoal = parseFloat(savingsGoalInput.value);
+                if (!isNaN(savingsGoal) && savingsGoal > 0) {
+                    localStorage.setItem(`${userSelect.value}_savingsGoal`, savingsGoal);
+                    savingsGoalElement.textContent = `$${savingsGoal}`;
+                    updateProgressBar(parseFloat(localStorage.getItem(`${userSelect.value}_totalIncome`)) || 0, savingsGoal);
+                }
+            });
+
+            // Event listener for income form submission
+            const incomeForm = document.getElementById('incomeForm');
+            if (incomeForm) {
+                incomeForm.addEventListener('submit', (event) => {
                     event.preventDefault();
-                    const expenseAmount = parseFloat(document.getElementById('expenseAmount').value);
-                    let totalExpenses = parseFloat(localStorage.getItem(`${userSelect.value}_totalExpenses`)) || 0;
+                    const incomeAmount = parseFloat(document.getElementById('incomeAmount').value);
                     let totalIncome = parseFloat(localStorage.getItem(`${userSelect.value}_totalIncome`)) || 0;
-                    totalExpenses += expenseAmount;
-                    totalIncome -= expenseAmount;
-                    totalExpensesElement.textContent = `$${totalExpenses}`;
-                    totalIncomeElement.textContent = `$${totalIncome}`;
-                    localStorage.setItem(`${userSelect.value}_totalExpenses`, totalExpenses);
+                    totalIncome += incomeAmount;
                     localStorage.setItem(`${userSelect.value}_totalIncome`, totalIncome);
+                    totalIncomeElement.textContent = `$${totalIncome}`;
                     updateProgressBar(totalIncome, parseFloat(localStorage.getItem(`${userSelect.value}_savingsGoal`)) || 0);
                     event.target.reset();
                 });
