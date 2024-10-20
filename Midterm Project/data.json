@@ -15,5 +15,27 @@
             "totalExpenses": 0,
             "savingsGoal": 0
         }
-    }
+    },
+    "images": [
+        {
+            "name": "bank",
+            "src": "images/bank.png",
+            "alt": "Bank"
+        },
+        {
+            "name": "income",
+            "src": "images/income.png",
+            "alt": "Income"
+        },
+        {
+            "name": "expenses",
+            "src": "images/expenses.png",
+            "alt": "Expenses"
+        },
+        {
+            "name": "piggy_bank",
+            "src": "images/piggy_bank.jpg",
+            "alt": "Piggy Bank"
+        }
+    ]
 }
